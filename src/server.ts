@@ -34,14 +34,19 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
-    res.send("try GET /filteredimage?image_url={{}}")
+    res.send("Filter your image using the following endpoint: GET /filteredimage?image_url={public_image_link}")
   } );
 
   //https://images.unsplash.com/photo-1659535836241-9901856696b0
   app.get( "/filteredimage", async ( req, res ) => {
     const image = req.query.image_url;
-    const result = await filterImageFromURL(image.toString())
-    res.sendFile(result)
+    try{
+      const result = await filterImageFromURL(image.toString())
+      res.sendFile(result)
+      deleteLocalFiles(result)
+    }catch(error) {
+      return res.status(500).send("Invalid Iamge Submitted");
+    }
   } );
   
 
