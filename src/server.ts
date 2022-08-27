@@ -46,7 +46,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       return res.sendFile(result)
       //console.log(result)
     }catch(error) {
-      return res.status(500).send("Invalid Iamge Submitted");
+      return res.status(422).send("Invalid Iamge Submitted");
     }
   } );
   
