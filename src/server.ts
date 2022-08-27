@@ -42,8 +42,9 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     const image = req.query.image_url;
     try{
       const result = await filterImageFromURL(image.toString())
-      res.sendFile(result)
       deleteLocalFiles(result)
+      return res.sendFile(result)
+      //console.log(result)
     }catch(error) {
       return res.status(500).send("Invalid Iamge Submitted");
     }

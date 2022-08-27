@@ -27,13 +27,34 @@ export async function filterImageFromURL(inputURL: string): Promise<string> {
   });
 }
 
+async function fetchListofFiles (recentFile: string) {
+  return new Promise(async (resolve, reject) => {
+    try{
+      const imagePath = __dirname + "/tmp";
+      const res = await fs.readdirSync(imagePath);
+      if(res.length === 0) resolve(true)
+      for(let filename of res){
+        const filePath = imagePath+'/'+filename;
+        if(filePath !== recentFile){
+          fs.unlinkSync(imagePath +'/'+ filename);
+        }
+      }
+      resolve(true);
+    }catch(error) {
+      console.log(error.message)
+      reject(false);
+    }
+  })
+}
+
 // deleteLocalFiles
 // helper function to delete files on the local disk
 // useful to cleanup after tasks
 // INPUTS
 //    files: Array<string> an array of absolute paths to files
-export async function deleteLocalFiles(files: Array<string>) {
-  for (let file of files) {
-    fs.unlinkSync(file);
-  }
+export async function deleteLocalFiles(recentFilePath: string) {
+  await fetchListofFiles(recentFilePath);
+  // for (let file of files) {
+  //   fs.unlinkSync(file);
+  // }
 }
