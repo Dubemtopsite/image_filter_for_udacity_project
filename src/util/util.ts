@@ -32,19 +32,21 @@ async function fetchListofFiles (recentFile: string) {
     try{
       const imagePath = __dirname + "/tmp";
       const res = await fs.readdirSync(imagePath);
-      if(res.length === 0) resolve(true)
-      for(let filename of res){
-        const filePath = imagePath+'/'+filename;
+      if (res.length === 0) {
+        resolve(true);
+      }
+      for(const filename of res){
+        const filePath = imagePath + "/" + filename;
         if(filePath !== recentFile){
-          fs.unlinkSync(imagePath +'/'+ filename);
+          fs.unlinkSync(imagePath + "/" + filename);
         }
       }
       resolve(true);
-    }catch(error) {
-      console.log(error.message)
+    } catch (error) {
+      // console.log(error)
       reject(false);
     }
-  })
+  });
 }
 
 // deleteLocalFiles

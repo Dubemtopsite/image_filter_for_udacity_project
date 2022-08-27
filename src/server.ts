@@ -1,7 +1,7 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
-
+import bodyParser from "body-parser";
+import express from "express";
+import {Request, Response} from "express";
+import {deleteLocalFiles, filterImageFromURL} from "./util/util";
 (async () => {
 
   // Init the Express application
@@ -9,7 +9,6 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // Set the network port
   const port = process.env.PORT || 8082;
-  
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
@@ -29,27 +28,25 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
-  //! END @TODO1
-  
+  // ! END @TODO1
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  app.get( "/", async ( req: Request, res: Response ) => {
     res.send("Filter your image using the following endpoint: GET /filteredimage?image_url={public_image_link}")
   } );
 
-  //https://images.unsplash.com/photo-1659535836241-9901856696b0
-  app.get( "/filteredimage", async ( req, res ) => {
+  // https://images.unsplash.com/photo-1659535836241-9901856696b0
+  app.get( "/filteredimage", async ( req: Request, res: Response ) => {
     const image = req.query.image_url;
-    try{
-      const result = await filterImageFromURL(image.toString())
+    try {
+      const result = await filterImageFromURL(image.toString());
       deleteLocalFiles(result)
       return res.sendFile(result)
-      //console.log(result)
-    }catch(error) {
+      // console.log(result)
+    } catch (error) {
       return res.status(422).send("Invalid Iamge Submitted");
     }
   } );
-  
 
   // Start the Server
   app.listen( port, () => {
