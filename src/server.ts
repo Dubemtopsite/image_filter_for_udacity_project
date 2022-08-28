@@ -37,9 +37,9 @@ import {deleteLocalFiles, filterImageFromURL} from "./util/util";
 
   // https://images.unsplash.com/photo-1659535836241-9901856696b0
   app.get( "/filteredimage", async ( req: Request, res: Response ) => {
-    const image = req.query.image_url;
+    const image: String = req.query.image_url;
     try {
-      const result = await filterImageFromURL(image.toString());
+      const result: String = await filterImageFromURL(image.toString());
       deleteLocalFiles(result)
       return res.sendFile(result)
       // console.log(result)
